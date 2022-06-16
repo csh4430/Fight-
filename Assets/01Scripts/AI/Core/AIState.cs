@@ -7,6 +7,7 @@ public interface AIState
 {
     public Action OnStateAction { get; }
     public AIState NextState { get; }
-    public AICondition PositiveCondition { get; }
-    public AICondition NegativeCondition { get; }
+    public List<AICondition> PositiveCondition { get; }
+    public List<AICondition> NegativeCondition { get; }
+    public bool IsOr { get; }
 }

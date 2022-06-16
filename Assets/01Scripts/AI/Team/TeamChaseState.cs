@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyIdleState : MonoBehaviour, AIState
+public class TeamChaseState : MonoBehaviour, AIState
 {
+    public Transform TargetPos = null;
+    public Transform basePos;
     public Action OnStateAction { get; set; } = null;
 
     [SerializeField]
@@ -30,11 +32,13 @@ public class EnemyIdleState : MonoBehaviour, AIState
 
     private AgentMove _move;
     private AITransition _transition;
-    
+
     private void Awake()
     {
         nextState = _nextState as AIState;
-        _move = transform.parent.GetComponent<AgentMove>();
+
+        basePos = transform.parent;
+        _move = basePos.GetComponent<AgentMove>();
         _transition = GetComponent<AITransition>();
         _transition.TransitionDict.Add(this, NextState);
         foreach (var item in _posCondition)
@@ -49,7 +53,15 @@ public class EnemyIdleState : MonoBehaviour, AIState
         }
         OnStateAction += () =>
         {
-            _move.StopMove();
+            _move.OnWalkEvent?.Invoke(Vector3.forward);
+            basePos.LookAt(TargetPos);
         };
+    }
+
+    private void Update()
+    {
+        Transform a = TargetSetter.SetTarget(basePos, 5, LayerMask.GetMask("Player"));
+        if (a != null)
+            TargetPos = a;
     }
 }

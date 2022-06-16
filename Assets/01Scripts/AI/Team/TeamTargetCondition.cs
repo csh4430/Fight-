@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceCondition : MonoBehaviour, AICondition
+public class TeamTargetCondition : MonoBehaviour, AICondition
+    
 {
     [SerializeField]
     private float _distance;
@@ -17,17 +18,11 @@ public class DistanceCondition : MonoBehaviour, AICondition
         {
             temp = true;
         }
-            return temp;
+        return temp;
     }
 
     private void Awake()
     {
         basePos = transform.parent;
-    }
-
-    private void Update()
-    {
-        if (_targetPos == null)
-            _targetPos = TargetSetter.SetTarget(basePos, _distance, LayerMask.GetMask("Player"));
     }
 }

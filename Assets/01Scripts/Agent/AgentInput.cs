@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(AgentMove))]
 [RequireComponent(typeof(AgentAnimation))]
 [RequireComponent(typeof(AgentAttack))]
+[RequireComponent(typeof(IHittable))]
 public class AgentInput : MonoBehaviour
 {
     private Action<Vector3> OnWalkKeyInput;
@@ -14,12 +15,14 @@ public class AgentInput : MonoBehaviour
     private AgentMove _move;
     private AgentAnimation _anim;
     private AgentAttack _attack;
+    private IHittable _baseHit;
 
     private void Awake()
     {
         _move = GetComponent<AgentMove>();
         _anim = GetComponent<AgentAnimation>();
         _attack = GetComponent<AgentAttack>();
+        _baseHit = GetComponent<IHittable>();
         OnWalkKeyInput += (dir) =>
         {
             if (_attack.IsAttacking)
@@ -49,6 +52,7 @@ public class AgentInput : MonoBehaviour
 
     private void Update()
     {
+        if (_baseHit.IsDead) return;
         OnWalkKeyInput?.Invoke(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")));
         if (Input.GetKeyDown(KeyCode.X))
         {

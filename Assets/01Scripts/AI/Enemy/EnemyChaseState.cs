@@ -17,15 +17,18 @@ public class EnemyChaseState : MonoBehaviour, AIState
 
     [SerializeField]
     [RequireInterface(typeof(AICondition))]
-    private UnityEngine.Object _posCondition;
-    private AICondition posCondition;
-    public AICondition PositiveCondition { get => posCondition; set { posCondition = value; } }
+    private List<UnityEngine.Object> _posCondition = new List<UnityEngine.Object>();
+    private List<AICondition> posCondition = new List<AICondition>();
+    public List<AICondition> PositiveCondition { get => posCondition; set { posCondition = value; } }
 
     [SerializeField]
     [RequireInterface(typeof(AICondition))]
-    private UnityEngine.Object _negaCondition;
-    private AICondition negaCondition;
-    public AICondition NegativeCondition { get => negaCondition; set { negaCondition = value; } }
+    private List<UnityEngine.Object> _negaCondition = new List<UnityEngine.Object>();
+    private List<AICondition> negaCondition = new List<AICondition>();
+    public List<AICondition> NegativeCondition { get => negaCondition; set { negaCondition = value; } }
+
+    [field: SerializeField]
+    public bool IsOr { get; set; } = false;
 
     private AgentMove _move;
     private AITransition _transition;
@@ -33,17 +36,32 @@ public class EnemyChaseState : MonoBehaviour, AIState
     private void Awake()
     {
         nextState = _nextState as AIState;
-        posCondition = _posCondition as AICondition;
-        negaCondition = _negaCondition as AICondition;
+        
         basePos = transform.parent;
         _move = basePos.GetComponent<AgentMove>();
         _transition = GetComponent<AITransition>();
         _transition.TransitionDict.Add(this, NextState);
-        _transition.ConditionDict.Add(this, PositiveCondition == null ? NegativeCondition : PositiveCondition);
+        foreach (var item in _posCondition)
+        {
+            posCondition.Add(item as AICondition);
+            _transition.AddCondition(this, item as AICondition);
+        }
+        foreach (var item in _negaCondition)
+        {
+            negaCondition.Add(item as AICondition);
+            _transition.AddNegaCondition(this, item as AICondition);
+        }
         OnStateAction += () =>
         {
             _move.OnWalkEvent?.Invoke(Vector3.forward);
             basePos.LookAt(TargetPos);
         };
+    }
+
+    private void Update()
+    {
+        Transform a = TargetSetter.SetTarget(basePos, 5, LayerMask.GetMask("Player"));
+        if (a != null)
+            TargetPos = a;
     }
 }

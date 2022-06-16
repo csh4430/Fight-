@@ -2,16 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class EnemyIdleState : MonoBehaviour, AIState
+public class EnemyAttackState : MonoBehaviour, AIState
 {
+    public Transform basePos;
+    
     public Action OnStateAction { get; set; } = null;
 
     [SerializeField]
     [RequireInterface(typeof(AIState))]
     private UnityEngine.Object _nextState;
     private AIState nextState;
-    public AIState NextState { get => nextState as AIState; set { nextState = value; } }
+    public AIState NextState { get => nextState; set { nextState = value; } }
 
     [SerializeField]
     [RequireInterface(typeof(AICondition))]
@@ -27,14 +30,15 @@ public class EnemyIdleState : MonoBehaviour, AIState
 
     [field: SerializeField]
     public bool IsOr { get; set; } = false;
-
-    private AgentMove _move;
+    private AgentAttack _attack;
     private AITransition _transition;
-    
+
     private void Awake()
     {
         nextState = _nextState as AIState;
-        _move = transform.parent.GetComponent<AgentMove>();
+        
+        basePos = transform.parent;
+        _attack = basePos.GetComponent<AgentAttack>();
         _transition = GetComponent<AITransition>();
         _transition.TransitionDict.Add(this, NextState);
         foreach (var item in _posCondition)
@@ -49,7 +53,7 @@ public class EnemyIdleState : MonoBehaviour, AIState
         }
         OnStateAction += () =>
         {
-            _move.StopMove();
+            _attack.OnAttackEvent?.Invoke(Random.Range(1, 3));
         };
     }
 }
