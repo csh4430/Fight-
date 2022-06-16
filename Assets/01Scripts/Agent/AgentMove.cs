@@ -1,19 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Agent))]
+[RequireComponent(typeof(AgentAnimation))]
 public class AgentMove : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 3f;
     [SerializeField] private float rotationAngle = 3f;
     private Agent _base;
     private CharacterController _characterController = null;
+    private AgentAnimation _anim;
+
+    public Action<Vector3> OnWalkEvent;
+    public Action<Vector3> OnRunEvent;
 
     private void Awake()
     {
         _base = GetComponent<Agent>();
+        _anim = GetComponent<AgentAnimation>();
         _characterController = GetComponent<CharacterController>();
+
+        OnWalkEvent += (dir) =>
+        {
+            MoveAgent(dir);
+            _anim.PlayWalkAnimation();
+            _anim.StopRunAnimation();
+        };
+        OnRunEvent += (dir) =>
+        {
+            MoveAgent(dir * 3);
+            _anim.PlayRunAnimation();
+            _anim.StopWalkAnimation();
+        };
     }
 
     public void MoveAgent(Vector3 dir)
@@ -47,5 +67,11 @@ public class AgentMove : MonoBehaviour
         Vector3 forward = transform.forward * dir.z;
         forward.y += Physics.gravity.y * Time.deltaTime;
         _characterController?.Move(forward * _base.Speed * Time.deltaTime);
+    }
+    public void StopMove()
+    {
+        MoveAgent(Vector3.zero);
+        _anim.StopRunAnimation();
+        _anim.StopWalkAnimation();
     }
 }

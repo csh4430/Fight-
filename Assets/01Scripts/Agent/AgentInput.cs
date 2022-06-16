@@ -24,34 +24,26 @@ public class AgentInput : MonoBehaviour
         {
             if (_attack.IsAttacking)
                 return;
-            if(dir.sqrMagnitude > 0)
+            if(dir.sqrMagnitude > 0.8f)
             {
                 if (Input.GetKey(KeyCode.Z))
                 {
-                    if(dir.z > 0)
+                    if (dir.z > 0.8f)
                     {
-                        _move.MoveAgent(dir.normalized * 3);
-                        _anim.PlayRunAnimation();
-                        _anim.StopWalkAnimation();
+                        _move.OnRunEvent?.Invoke(dir.normalized);
                         return;
                     }
                 }
-                _move.MoveAgent(dir.normalized);
-                _anim.PlayWalkAnimation();
-                _anim.StopRunAnimation();
+                _move.OnWalkEvent?.Invoke(dir.normalized);
             }
             else if(dir.sqrMagnitude < 1)
             {
-                _anim.StopRunAnimation();
-                _anim.StopWalkAnimation();
+                _move.StopMove();
             }
         };
 
         OnAttackKeyInput += (type) => {
-            if (_attack.IsAttacking)
-                return;
-            _attack.IsAttacking = true;
-            _anim.PlayAttackAnimation(type);
+            _attack.OnAttackEvent?.Invoke(type);
         };
     }
 
