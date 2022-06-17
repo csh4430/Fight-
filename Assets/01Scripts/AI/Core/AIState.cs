@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface AIState
+public abstract class AIState : MonoBehaviour
 {
-    public Action OnStateAction { get; }
-    public AIState NextState { get; }
-    public List<AICondition> PositiveCondition { get; }
-    public List<AICondition> NegativeCondition { get; }
-    public bool IsOr { get; }
+    public abstract Action OnStateAction { get; set; }
+    public abstract List<AITransition> Transition { get; set; }
 }

@@ -5,72 +5,44 @@ using UnityEngine;
 public class AIBase : MonoBehaviour
 {
     [SerializeField]
-    [RequireInterface(typeof(AIState))]
-    private UnityEngine.Object _currentState;
-    private AIState currentState;
-    protected AIState CurrentState { get => currentState; set { currentState = value; } }
-    protected AITransition _transition;
-    protected IHittable _baseHit;
-    private bool pos = false, neg = false;
+    private AIState _currentState;
+    [SerializeField]
+    private AITransition _currentTransition;
+    Transform _basePos = null;
 
     private void Awake()
     {
-        currentState = _currentState as AIState;
-        _transition = GetComponent<AITransition>();
-        _baseHit = transform.parent.GetComponent<IHittable>();
+        _basePos = transform.parent;
+        _currentState = transform.Find("Idle").GetComponent<AIState>();
     }
 
     private void Update()
     {
-        if (_baseHit.IsDead)
-            return;
-
-
-        if (currentState.IsOr)
+        _currentState.OnStateAction?.Invoke();
+        foreach(var transition in _currentState.Transition)
         {
-            if (pos || neg)
-                MoveNextState();
-        }
-        else
-        {
-            if (pos && neg)
-                MoveNextState();
-        }
-        
-        pos = neg = false;
-
-        CurrentState.OnStateAction?.Invoke();        
-        if (_transition.ConditionDict.ContainsKey(currentState))
-        {
-            foreach (var conditions in _transition.ConditionDict[CurrentState])
+            foreach (var condition in transition.PositiveConditions)
             {
-                if (!conditions.CheckCondition())
+                if (!condition.CheckCondition())
                 {
                     return;
                 }
             }
-            pos = true;
-        }
-        else
-            pos = true;
-        if (_transition.NegaConditionDict.ContainsKey(currentState))
-        {
-            foreach (var conditions in _transition.NegaConditionDict[CurrentState])
+
+            foreach (var condition in transition.NegativeConditions)
             {
-                if (conditions.CheckCondition())
+                if (condition.CheckCondition())
                 {
                     return;
                 }
             }
-            neg = true;
+            _currentTransition = transition;
+            MoveNextState();
         }
-        else
-            neg = true;
     }
 
     public void MoveNextState()
     {
-        CurrentState = _transition.TransitionDict[CurrentState];
-        Debug.Log(currentState);
+        _currentState = _currentTransition.NextState;
     }
 }

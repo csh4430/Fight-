@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceCondition : MonoBehaviour, AICondition
+public class DistanceCondition : AICondition
 {
     [SerializeField]
     private float _distance;
     [SerializeField]
     Transform _targetPos = null;
-    private Transform basePos = null;
-    public bool CheckCondition()
+    public Transform BasePos = null;
+    public override bool CheckCondition()
     {
         bool temp = false;
-        Vector3 dir = _targetPos.position - basePos.position;
+        Vector3 dir = _targetPos.position - BasePos.position;
         if (dir.sqrMagnitude < _distance * _distance)
         {
             temp = true;
@@ -20,14 +20,9 @@ public class DistanceCondition : MonoBehaviour, AICondition
             return temp;
     }
 
-    private void Awake()
-    {
-        basePos = transform.parent;
-    }
-
     private void Update()
     {
         if (_targetPos == null)
-            _targetPos = TargetSetter.SetTarget(basePos, _distance, LayerMask.GetMask("Player"));
+            _targetPos = TargetSetter.SetTarget(BasePos, _distance, LayerMask.GetMask("Player"));
     }
 }

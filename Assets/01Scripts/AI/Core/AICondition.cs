@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface AICondition
+public abstract class AICondition : MonoBehaviour
 {
-    public bool CheckCondition();
+    public abstract bool CheckCondition();
 }

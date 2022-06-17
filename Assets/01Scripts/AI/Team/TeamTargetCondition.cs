@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeamTargetCondition : MonoBehaviour, AICondition
+public class TeamTargetCondition : AICondition
     
 {
     [SerializeField]
@@ -10,7 +10,7 @@ public class TeamTargetCondition : MonoBehaviour, AICondition
     [SerializeField]
     Transform _targetPos = null;
     private Transform basePos = null;
-    public bool CheckCondition()
+    public override bool CheckCondition()
     {
         bool temp = false;
         Vector3 dir = _targetPos.position - basePos.position;
