@@ -31,6 +31,7 @@ public class Agent : MonoBehaviour
         OnDamaged += (damage, attacker) =>
         {
             _anime.PlayDamageAnimation();
+            Debug.Log($"{attacker.name} attacked with {damage} Damages.");
         };
     }
 }

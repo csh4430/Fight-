@@ -9,6 +9,7 @@ public class DistanceCondition : AICondition
     [SerializeField]
     Transform _targetPos = null;
     public Transform BasePos = null;
+    public LayerMask layerMask;
     public override bool CheckCondition()
     {
         bool temp = false;
@@ -22,7 +23,8 @@ public class DistanceCondition : AICondition
 
     private void Update()
     {
-        if (_targetPos == null)
-            _targetPos = TargetSetter.SetTarget(BasePos, _distance, LayerMask.GetMask("Player"));
+        Transform target = TargetSetter.SetTarget(BasePos, _distance, layerMask);
+        if (target != null)
+            _targetPos = target;
     }
 }

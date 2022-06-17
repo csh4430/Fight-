@@ -5,6 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Agent))]
 [RequireComponent(typeof(AgentAnimation))]
+[RequireComponent(typeof(AgentAttack))]
 public class AgentMove : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 3f;
@@ -12,6 +13,7 @@ public class AgentMove : MonoBehaviour
     private Agent _base;
     private CharacterController _characterController = null;
     private AgentAnimation _anim;
+    private AgentAttack _attack;
 
     public Action<Vector3> OnWalkEvent;
     public Action<Vector3> OnRunEvent;
@@ -20,16 +22,21 @@ public class AgentMove : MonoBehaviour
     {
         _base = GetComponent<Agent>();
         _anim = GetComponent<AgentAnimation>();
+        _attack = GetComponent<AgentAttack>();
         _characterController = GetComponent<CharacterController>();
 
         OnWalkEvent += (dir) =>
         {
+            if (_attack.IsAttacking)
+                return;
             MoveAgent(dir);
             _anim.PlayWalkAnimation();
             _anim.StopRunAnimation();
         };
         OnRunEvent += (dir) =>
         {
+            if (_attack.IsAttacking)
+                return;
             MoveAgent(dir * 3);
             _anim.PlayRunAnimation();
             _anim.StopWalkAnimation();
@@ -38,6 +45,8 @@ public class AgentMove : MonoBehaviour
 
     public void MoveAgent(Vector3 dir)
     {
+        if(_characterController.enabled == false)
+            return;
         int right = 0;
         
         if (dir.z >= 0)

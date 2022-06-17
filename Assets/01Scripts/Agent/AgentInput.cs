@@ -25,8 +25,7 @@ public class AgentInput : MonoBehaviour
         _baseHit = GetComponent<IHittable>();
         OnWalkKeyInput += (dir) =>
         {
-            if (_attack.IsAttacking)
-                return;
+            
             if(dir.sqrMagnitude > 0.8f)
             {
                 if (Input.GetKey(KeyCode.Z))

@@ -9,13 +9,12 @@ public class IdleState : AIState
     [field: SerializeField]
     public override List<AITransition> Transition { get; set; } = new List<AITransition>();
 
-    Transform _basePos = null;
+    public Transform BasePos = null;
     private AgentMove _move = null;
 
     private void Awake()
     {
-        _basePos = transform.parent;
-        _move = _basePos.GetComponent<AgentMove>();
+        _move = BasePos.GetComponent<AgentMove>();
         foreach (AITransition transition in Transition)
         {
             transition.StartState = this;

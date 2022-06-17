@@ -2,32 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class ChaseState : AIState
+public class AttackState : AIState
 {
     public override Action OnStateAction { get; set; }
     [field: SerializeField]
     public override List<AITransition> Transition { get; set; } = new List<AITransition>();
 
     public Transform _basePos = null;
-    private AgentMove _move = null;
-    public Transform TargetPos = null;
+    private AgentAttack _attack = null;
 
     private void Awake()
     {
-        _move = _basePos.GetComponent<AgentMove>();
+        _attack = _basePos.GetComponent<AgentAttack>();
         foreach (AITransition transition in Transition)
         {
             transition.StartState = this;
         }
         OnStateAction += () =>
         {
-            _basePos.LookAt(TargetPos);
-            Vector3 dir = TargetPos.position - _basePos.position;
-            if (dir.sqrMagnitude < 2.5f)
-                _move.OnWalkEvent?.Invoke(Vector3.forward);
-            else
-                _move.OnRunEvent?.Invoke(Vector3.forward);
+            _attack.OnAttackEvent?.Invoke(Random.Range(1, 3));
         };
     }
 }

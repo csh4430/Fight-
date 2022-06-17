@@ -9,7 +9,7 @@ public class TeamTargetCondition : AICondition
     private float _distance;
     [SerializeField]
     Transform _targetPos = null;
-    private Transform basePos = null;
+    public Transform basePos = null;
     public override bool CheckCondition()
     {
         bool temp = false;
@@ -19,10 +19,5 @@ public class TeamTargetCondition : AICondition
             temp = true;
         }
         return temp;
-    }
-
-    private void Awake()
-    {
-        basePos = transform.parent;
     }
 }

@@ -39,7 +39,7 @@ public class AgentAttack : MonoBehaviour
         {
             IHittable hit = victim.GetComponent<IHittable>();
             hit?.DamageAgent(_base.Attack, gameObject);
-            Debug.Log(victim.name);
+            Debug.Log($"Victim : {victim.name}");
         }
         
     }
