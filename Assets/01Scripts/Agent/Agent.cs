@@ -18,14 +18,18 @@ public class Agent : MonoBehaviour
 
     private AgentAnimation _anime;
     protected CharacterController _controller;
+    private AIBase _ai;
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _anime = GetComponent<AgentAnimation>();
+        _ai = transform.Find("AI")?.GetComponent<AIBase>();
         OnDied += () =>
         {
             _anime.PlayDieAnimation(Random.Range(1, 3));
+            if(_ai != null)
+                _ai.enabled = false;
         };
 
         OnDamaged += (damage, attacker) =>

@@ -7,9 +7,11 @@ public class TargetCondition : AICondition
     public Transform BasePos;
     public float Distance;
     public LayerMask layerMask;
+    [SerializeField]
+    Transform target;
     public override bool CheckCondition()
     {
-        Transform target = TargetSetter.SetTarget(BasePos, Distance, layerMask);
+        target = TargetSetter.SetTarget(BasePos, Distance, layerMask);
         if(target != null)
             return true;
         return false;

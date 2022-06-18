@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAgent : Agent, IHittable
 {
+    [field:SerializeField]
     public bool IsDead { get; private set; } = false;
 
     public void DieAgent()

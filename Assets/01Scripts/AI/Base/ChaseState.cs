@@ -12,6 +12,7 @@ public class ChaseState : AIState
     public Transform _basePos = null;
     private AgentMove _move = null;
     public Transform TargetPos = null;
+    public LayerMask layerMask;
 
     private void Awake()
     {
@@ -22,12 +23,20 @@ public class ChaseState : AIState
         }
         OnStateAction += () =>
         {
+            if (TargetPos == null) return;
             _basePos.LookAt(TargetPos);
             Vector3 dir = TargetPos.position - _basePos.position;
-            if (dir.sqrMagnitude < 2.5f)
+            if (dir.sqrMagnitude < 4f)
                 _move.OnWalkEvent?.Invoke(Vector3.forward);
             else
                 _move.OnRunEvent?.Invoke(Vector3.forward);
         };
+    }
+
+    private void Update()
+    {
+        Transform target = TargetSetter.SetTarget(_basePos, 5, layerMask);
+        if (target != null)
+            TargetPos = target;
     }
 }

@@ -73,7 +73,7 @@ public class AgentMove : MonoBehaviour
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y + right * rotationAngle, transform.eulerAngles.z), Time.deltaTime * rotationSpeed);
 
-        Vector3 forward = transform.forward * dir.z;
+        Vector3 forward = transform.forward * dir.magnitude * dir.normalized.z;
         forward.y += Physics.gravity.y * Time.deltaTime;
         _characterController?.Move(forward * _base.Speed * Time.deltaTime);
     }
