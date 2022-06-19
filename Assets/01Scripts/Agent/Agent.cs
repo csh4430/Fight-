@@ -20,7 +20,7 @@ public class Agent : MonoBehaviour
     protected CharacterController _controller;
     private AIBase _ai;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _anime = GetComponent<AgentAnimation>();

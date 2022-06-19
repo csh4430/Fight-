@@ -28,7 +28,7 @@ public class AgentAttack : MonoBehaviour
             if (IsAttacking)
                 return;
             IsAttacking = true;
-            _anim.PlayAttackAnimation(type);            
+            _anim.PlayAttackAnimation(type);
         };
 
     }

@@ -5,5 +5,8 @@ using UnityEngine;
 
 public class TeamPatrolState : ChaseState
 {
-    
+    private void Update()
+    {
+        
+    }
 }

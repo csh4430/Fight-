@@ -12,11 +12,12 @@ public class ChaseState : AIState
     public Transform _basePos = null;
     private AgentMove _move = null;
     public Transform TargetPos = null;
-    public LayerMask layerMask;
+    public AIBase _ai;
 
     private void Awake()
     {
         _move = _basePos.GetComponent<AgentMove>();
+        _ai = _basePos.Find("AI").GetComponent<AIBase>();
         foreach (AITransition transition in Transition)
         {
             transition.StartState = this;
@@ -35,8 +36,6 @@ public class ChaseState : AIState
 
     private void Update()
     {
-        Transform target = TargetSetter.SetTarget(_basePos, 5, layerMask);
-        if (target != null)
-            TargetPos = target;
+        TargetPos = _ai.TargetPos;
     }
 }

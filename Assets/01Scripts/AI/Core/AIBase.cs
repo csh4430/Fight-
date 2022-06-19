@@ -11,16 +11,24 @@ public class AIBase : MonoBehaviour
     Transform _basePos = null;
 
     private bool pos = false, neg = false;
+    public Transform TargetPos;
+    public LayerMask layerMask;
+    [SerializeField]
+    private float _findDistance;
 
     private void Awake()
     {
         _basePos = transform.parent;
         _currentState = transform.Find("State").Find("Idle").GetComponent<AIState>();
     }
-
     private void Update()
     {
+        Transform target = TargetSetter.SetTarget(_basePos, _findDistance, layerMask);
+        if (target != null)
+            TargetPos = target;
+
         _currentState.OnStateAction?.Invoke();
+
         foreach(var transition in _currentState.Transition)
         {
             pos = neg = true;

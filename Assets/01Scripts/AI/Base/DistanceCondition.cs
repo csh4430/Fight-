@@ -7,11 +7,9 @@ public class DistanceCondition : AICondition
     [SerializeField]
     private float _distance;
     [SerializeField]
-    private float _findDistance;
-    [SerializeField]
     Transform _targetPos = null;
     public Transform BasePos = null;
-    public LayerMask layerMask;
+    private AIBase _ai;
     public override bool CheckCondition()
     {
         bool temp = false;
@@ -24,10 +22,13 @@ public class DistanceCondition : AICondition
         return temp;
     }
 
+    private void Awake()
+    {
+        _ai = BasePos.Find("AI").GetComponent<AIBase>();   
+    }
+
     private void Update()
     {
-        Transform target = TargetSetter.SetTarget(BasePos, _findDistance, layerMask);
-        if (target != null)
-            _targetPos = target;
+        _targetPos = _ai.TargetPos;
     }
 }

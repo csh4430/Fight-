@@ -28,7 +28,7 @@ public class AgentInput : MonoBehaviour
             
             if(dir.sqrMagnitude > 0.8f)
             {
-                if (Input.GetKey(KeyCode.Z))
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
                     if (dir.z > 0.8f)
                     {
@@ -53,7 +53,7 @@ public class AgentInput : MonoBehaviour
     {
         if (_baseHit.IsDead) return;
         OnWalkKeyInput?.Invoke(new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")));
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetMouseButtonDown(0))
         {
             OnAttackKeyInput?.Invoke(Random.Range(1, 3));
         }
