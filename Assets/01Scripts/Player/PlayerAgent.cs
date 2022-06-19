@@ -6,7 +6,7 @@ public class PlayerAgent : Agent, IHittable
 {
     [field:SerializeField]
     public bool IsDead { get; private set; } = false;
-    public List<TeamAI> TeamAi = new List<TeamAI>();
+    public List<ChaseState> TeamChase = new List<ChaseState>();
 
     public void DieAgent()
     {
@@ -35,9 +35,9 @@ public class PlayerAgent : Agent, IHittable
 
     private void SetTeamPos(Transform teampos)
     {
-        for (int i = 0; i < TeamAi.Count; i++)
+        for (int i = 0; i < TeamChase.Count; i++)
         {
-            TeamAi[i].TargetPos = teampos.GetChild(i);
+            TeamChase[i].TargetPos = teampos.GetChild(i);
         }
     }
 }
