@@ -13,6 +13,8 @@ public class TeamTargetCondition : AICondition
     public override bool CheckCondition()
     {
         bool temp = false;
+        if (_targetPos == null)
+            return false;
         Vector3 dir = _targetPos.position - basePos.position;
         if (dir.sqrMagnitude < _distance * _distance)
         {

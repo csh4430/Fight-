@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Agent))]
@@ -15,6 +16,7 @@ public class AgentAttack : MonoBehaviour
     public LayerMask enemyLayer;
     private Agent _base;
     private AgentAnimation _anim;
+    private AgentProjectileLauncher _launcher;
 
     public Action<int> OnAttackEvent;
 
@@ -22,7 +24,7 @@ public class AgentAttack : MonoBehaviour
     {
         _base = GetComponent<Agent>();
         _anim = GetComponent<AgentAnimation>();
-
+        TryGetComponent<AgentProjectileLauncher>(out _launcher);
         OnAttackEvent += (type) =>
         {
             if (IsAttacking)
@@ -35,13 +37,26 @@ public class AgentAttack : MonoBehaviour
     public void AttackAgent()
     {
         Collider[] victims = Physics.OverlapSphere(centerPos.position + centerPos.forward * attackRange, attackRange, enemyLayer);
-        foreach(Collider victim in victims)
+        if(_launcher != null)
         {
-            IHittable hit = victim.GetComponent<IHittable>();
-            hit?.DamageAgent(_base.Attack, gameObject);
-            Debug.Log($"Victim : {victim.name}");
+            Collider target = victims.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).FirstOrDefault();
+            if (target != null)
+            {
+                _launcher.LaunchProjectile(centerPos, target.transform);
+                IHittable hit = target.GetComponent<IHittable>();
+                hit?.DamageAgent(_base.Attack, gameObject);
+                Debug.Log($"Victim : {target.name}");
+            }
         }
-        
+        else
+        {
+            foreach (Collider victim in victims)
+            {
+                IHittable hit = victim.GetComponent<IHittable>();
+                hit?.DamageAgent(_base.Attack, gameObject);
+                Debug.Log($"Victim : {victim.name}");
+            }
+        }
     }
 
     public void StopAttack()

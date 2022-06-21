@@ -10,8 +10,9 @@ public class ChaseState : AIState
     public override List<AITransition> Transition { get; set; } = new List<AITransition>();
 
     public Transform _basePos = null;
-    private AgentMove _move = null;
+    protected AgentMove _move = null;
     public Transform TargetPos = null;
+    public Transform HeadPos = null;
     public AIBase _ai;
 
     private void Awake()

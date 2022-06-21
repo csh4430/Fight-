@@ -14,6 +14,7 @@ public class AgentAnimation : MonoBehaviour
     private int DieHash= Animator.StringToHash("Die");
     private int DieTypeHash= Animator.StringToHash("DieType");
     private int DamageHash = Animator.StringToHash("Damage");
+    private int SpecialHash = Animator.StringToHash("Special");
     private void Awake()
     {
         _anime = GetComponent<Animator>();
@@ -53,5 +54,10 @@ public class AgentAnimation : MonoBehaviour
     public void PlayDamageAnimation()
     {
         _anime.SetTrigger(DamageHash);
+    }
+
+    public void PlaySpecialAnimation()
+    {
+        _anime.SetTrigger(SpecialHash);
     }
 }

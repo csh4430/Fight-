@@ -15,7 +15,7 @@ public class DistanceCondition : AICondition
         bool temp = false;
         if (_targetPos == null) return false;
         Vector3 dir = _targetPos.position - BasePos.position;
-        if (dir.sqrMagnitude <= _distance * _distance)
+        if (dir.sqrMagnitude < _distance * _distance)
         {
             temp = true;
         }

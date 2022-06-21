@@ -16,6 +16,7 @@ public class Agent : MonoBehaviour
 
     protected Action OnDied;
     protected Action<float, GameObject> OnDamaged;
+    protected Action<float, GameObject> OnHealed;
 
     private AgentAnimation _anime;
     private AgentHpBar _hpBar;
@@ -45,5 +46,21 @@ public class Agent : MonoBehaviour
             Debug.Log($"{attacker.name} attacked with {damage} Damages.");
             _hpBar?.SetHpBar(Hp, OriginalHp);
         };
+
+        OnHealed += (value, healer) =>
+        {
+            StartCoroutine(HealCoroutine(value));
+        };
+    }
+    private IEnumerator HealCoroutine(float value)
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            Hp += value / 10;
+            yield return new WaitForSeconds(0.1f);
+            if(Hp > OriginalHp)
+                Hp = OriginalHp;
+            _hpBar?.SetHpBar(Hp, OriginalHp);
+        }
     }
 }

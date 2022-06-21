@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeamAgent : Agent, IHittable
+public class TeamAgent : Agent, IHittable, IHealable
 {
     [field:SerializeField]
     public bool IsDead { get; private set; } = false;
@@ -23,5 +23,10 @@ public class TeamAgent : Agent, IHittable
         {
             DieAgent();
         }
+    }
+
+    public void HealAgent(float value, GameObject healer)
+    {
+        OnHealed?.Invoke(value, healer);
     }
 }
