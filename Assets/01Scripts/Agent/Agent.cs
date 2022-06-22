@@ -24,6 +24,7 @@ public class Agent : MonoBehaviour
     private DamageParticle _damageParticle;
     private AIBase _ai;
 
+    private ISkillState _skillState;
     protected virtual void Awake()
     {
         OriginalHp = Hp;
@@ -32,6 +33,7 @@ public class Agent : MonoBehaviour
         _ai = transform.Find("AI")?.GetComponent<AIBase>();
         _hpBar = GetComponent<AgentHpBar>();
         _damageParticle = GetComponent<DamageParticle>();
+        _skillState = GetComponentInChildren<ISkillState>();
         OnDied += () =>
         {
             _anime.PlayDieAnimation(Random.Range(1, 3));
@@ -62,5 +64,11 @@ public class Agent : MonoBehaviour
                 Hp = OriginalHp;
             _hpBar?.SetHpBar(Hp, OriginalHp);
         }
+    }
+
+
+    public void StopSkill()
+    {
+        _skillState.IsUsingSkill = false;
     }
 }

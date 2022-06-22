@@ -60,4 +60,14 @@ public class AgentAnimation : MonoBehaviour
     {
         _anime.SetTrigger(SpecialHash);
     }
+
+    public void PauseAnimation()
+    {
+        _anime.speed = 0;
+    }
+    
+    public void RePlay()
+    {
+        _anime.speed = 1;
+    }
 }
