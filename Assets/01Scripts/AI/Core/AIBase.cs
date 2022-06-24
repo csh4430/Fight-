@@ -10,6 +10,9 @@ public class AIBase : MonoBehaviour
     private AITransition _currentTransition;
     Transform _basePos = null;
 
+    [SerializeField]
+    private Transform defaultTransform;
+
     private bool pos = false, neg = false;
     public Transform TargetPos;
     public LayerMask layerMask;
@@ -19,15 +22,15 @@ public class AIBase : MonoBehaviour
     private void Awake()
     {
         _basePos = transform.parent;
-        _currentState = transform.Find("State").Find("Idle").GetComponent<AIState>();
     }
     private void Update()
     {
         Transform target = TargetSetter.SetTarget(_basePos, _findDistance, layerMask);
         if (target != null)
             TargetPos = target;
-
-        _currentState.OnStateAction?.Invoke();
+        else
+            if (defaultTransform != null)
+                TargetPos = defaultTransform;
 
         foreach(var transition in _currentState.Transition)
         {
@@ -63,6 +66,8 @@ public class AIBase : MonoBehaviour
                     MoveNextState();
             }
         }
+
+        _currentState.OnStateAction?.Invoke();
     }
 
     public void MoveNextState()
@@ -70,5 +75,10 @@ public class AIBase : MonoBehaviour
         AIState originState = _currentState;
         _currentState = _currentTransition.NextState;
         Debug.Log($"{_basePos.name} Changed State To {_currentState.ToString()} From {originState.ToString()}");
+    }
+
+    public void SetState(AIState state)
+    {
+        _currentState = state;
     }
 }

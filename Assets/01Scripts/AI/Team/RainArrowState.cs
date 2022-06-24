@@ -28,6 +28,9 @@ public class RainArrowState : AIState, ISkillState
     private Transform _basePos;
     private AgentAnimation _anim;
 
+    [SerializeField]
+    private GameObject arrowLauncher = null;
+
 
     private void Awake()
     {
@@ -45,10 +48,11 @@ public class RainArrowState : AIState, ISkillState
 
     private IEnumerator Check()
     {
+        _anim.PlaySpecialAnimation();
+        yield return new WaitForSeconds(0.4f);
         RaycastHit hit;
         GameObject circle = Circle.Reuse();
         circle.GetComponent<Radius>().SetRadius(Range);
-        _anim.PlaySpecialAnimation();
         Vector3 targetPos;
         while (true)
         {
@@ -64,6 +68,9 @@ public class RainArrowState : AIState, ISkillState
                     IsUsingSkill = false;
                     _coolDown = CoolDown;
                     circle.Release();
+                    GameObject launcher = arrowLauncher.Reuse(hit.point + Vector3.up * 10, Quaternion.identity);
+                    launcher.GetComponent<SkyArrowLauncher>().Summon(Range);
+                    launcher.Release();
                     _anim.RePlay();
                     Collider[] victims = Physics.OverlapSphere(hit.point, Range, LayerMask.GetMask("Enemy"));
                     foreach(Collider c in victims)

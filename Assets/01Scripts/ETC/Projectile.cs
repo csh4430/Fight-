@@ -14,8 +14,11 @@ public class Projectile : MonoBehaviour
     {
         OnSummoned += (target) =>
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * 100);
-            transform.LookAt(target);
+            transform.Translate(Vector3.forward * Time.deltaTime * 70);
+            if (target == null)
+                transform.rotation = Quaternion.Euler(90, 0, 0);
+            else
+                transform.LookAt(target);
         };
     }
     void Update()

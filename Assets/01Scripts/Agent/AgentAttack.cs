@@ -44,7 +44,7 @@ public class AgentAttack : MonoBehaviour
             {
                 _launcher.LaunchProjectile(centerPos, target.transform);
                 IHittable hit = target.GetComponent<IHittable>();
-                hit?.DamageAgent(_base.Attack, gameObject);
+                hit?.DamageAgent(_base.Attack, _base.gameObject);
                 Debug.Log($"Victim : {target.name}");
             }
         }

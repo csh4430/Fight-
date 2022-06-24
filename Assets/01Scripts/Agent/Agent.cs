@@ -46,7 +46,7 @@ public class Agent : MonoBehaviour
             _anime.PlayDamageAnimation();
             _damageParticle.RenderParticle(transform);
             Debug.Log($"{attacker.name} attacked with {damage} Damages.");
-            _hpBar?.SetHpBar(Hp, OriginalHp);
+            _hpBar.SetHpBar(Hp, OriginalHp);
         };
 
         OnHealed += (value, healer) =>
