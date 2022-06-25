@@ -45,10 +45,10 @@ public class AgentMove : MonoBehaviour
 
     public void MoveAgent(Vector3 dir)
     {
-        if(_characterController.enabled == false)
+        if (_characterController.enabled == false)
             return;
         int right = 0;
-        
+
         if (dir.z >= 0)
         {
             if (dir.x > 0)
@@ -82,5 +82,10 @@ public class AgentMove : MonoBehaviour
         MoveAgent(Vector3.zero);
         _anim.StopRunAnimation();
         _anim.StopWalkAnimation();
+    }
+
+    public void SetAgentCollision(bool value)
+    {
+        _characterController.isTrigger = value;
     }
 }

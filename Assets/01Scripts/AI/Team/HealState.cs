@@ -7,18 +7,17 @@ using UnityEngine.UI;
 public class HealState : AIState, ISkillState
 {
     public override Action OnStateAction { get; set; }
-    
+
     [field: SerializeField]
     public override List<AITransition> Transition { get; set; }
 
-    private AgentAnimation _anime = null;
     public Transform _basePos = null;
     private Transform _targetPos = null;
     [SerializeField]
     private float _healAmount = 0;
     public Transform TargetPos { get => _targetPos; set { _targetPos = value; } }
 
-    [field:SerializeField]
+    [field: SerializeField]
     public float CoolDown { get; set; }
     private float _coolDown = 0;
 
@@ -61,9 +60,9 @@ public class HealState : AIState, ISkillState
         if (_coolDown > 0)
         {
             _coolDown -= Time.deltaTime;
-            if(_coolDown < 0)
+            if (_coolDown < 0)
                 _coolDown = 0;
-           CoolDownSilder.value = _coolDown / CoolDown;
+            CoolDownSilder.value = _coolDown / CoolDown;
         }
     }
 }

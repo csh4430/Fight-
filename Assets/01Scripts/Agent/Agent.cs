@@ -66,7 +66,6 @@ public class Agent : MonoBehaviour
         }
     }
 
-
     public void StopSkill()
     {
         _skillState.IsUsingSkill = false;

@@ -70,4 +70,10 @@ public class AgentAnimation : MonoBehaviour
     {
         _anime.speed = 1;
     }
+
+    public void SetSpeed(float value)
+    {
+        if (value >= 0)
+            _anime.speed = value;
+    }
 }
