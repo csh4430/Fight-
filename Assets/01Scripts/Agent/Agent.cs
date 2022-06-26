@@ -21,6 +21,7 @@ public class Agent : MonoBehaviour
     private AgentAnimation _anime;
     protected AgentMove _move;
     private AgentHpBar _hpBar;
+    protected AgentAudio _audio;
     protected CharacterController _controller;
     private DamageParticle _damageParticle;
     private AIBase _ai;
@@ -32,6 +33,7 @@ public class Agent : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _anime = GetComponent<AgentAnimation>();
         _move = GetComponent<AgentMove>();
+        _audio = GetComponent<AgentAudio>();
         _ai = transform.Find("AI")?.GetComponent<AIBase>();
         _hpBar = GetComponent<AgentHpBar>();
         _damageParticle = GetComponent<DamageParticle>();
@@ -39,6 +41,7 @@ public class Agent : MonoBehaviour
         OnDied += () =>
         {
             _anime.PlayDieAnimation(Random.Range(1, 3));
+            _audio.StopAudio();
             if(_ai != null)
                 _ai.enabled = false;
         };

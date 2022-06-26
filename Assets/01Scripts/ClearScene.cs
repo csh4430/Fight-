@@ -17,8 +17,8 @@ public class ClearScene: MonoBehaviour
     {
 
         seq = DOTween.Sequence();
-        seq.Append(MainText.DOText("You Could Get Enemy King's Head", 3).SetEase(Ease.Linear));
-        seq.Append(SubText.DOText("It's for All of you", 2).SetEase(Ease.Linear));
+        seq.Append(MainText.DOText("This War Could Be Stopped", 3).SetEase(Ease.Linear));
+        seq.Append(SubText.DOText("It Was for All of you", 2).SetEase(Ease.Linear));
 
         replayButton.onClick.AddListener(() =>
         {

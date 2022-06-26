@@ -16,6 +16,7 @@ public class AgentAttack : MonoBehaviour
     public LayerMask enemyLayer;
     private Agent _base;
     private AgentAnimation _anim;
+    private AgentAudio _audio;
     private AgentProjectileLauncher _launcher;
 
     public Action<int> OnAttackEvent;
@@ -24,12 +25,14 @@ public class AgentAttack : MonoBehaviour
     {
         _base = GetComponent<Agent>();
         _anim = GetComponent<AgentAnimation>();
+        _audio = GetComponent<AgentAudio>();
         TryGetComponent<AgentProjectileLauncher>(out _launcher);
         OnAttackEvent += (type) =>
         {
             if (IsAttacking)
                 return;
             IsAttacking = true;
+            _audio.PlayAttackSound();
             _anim.PlayAttackAnimation(type);
         };
 

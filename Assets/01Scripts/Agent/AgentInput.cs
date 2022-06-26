@@ -25,7 +25,6 @@ public class AgentInput : MonoBehaviour
         _baseHit = GetComponent<IHittable>();
         OnWalkKeyInput += (dir) =>
         {
-            
             if(dir.sqrMagnitude > 0.8f)
             {
                 if (Input.GetKey(KeyCode.LeftShift))

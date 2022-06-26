@@ -9,6 +9,8 @@ public class StartScene : MonoBehaviour
     public Transform cameraPos;
     public Transform targetPos;
 
+    public GameObject BackgroundObject;
+
     public Button nextButton;
 
     private void Awake()
@@ -17,6 +19,7 @@ public class StartScene : MonoBehaviour
         {
             SceneManager.LoadScene("Intro");
         });
+        DontDestroyOnLoad(BackgroundObject);
     }
 
     private void Update()

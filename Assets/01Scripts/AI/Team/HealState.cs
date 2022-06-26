@@ -26,11 +26,15 @@ public class HealState : AIState, ISkillState
 
     [field: SerializeField]
     public Slider CoolDownSilder { get; set; }
+    [field : SerializeField]
+    public AudioClip skillClip { get; set; }
 
     private AgentAnimation _anim = null;
+    private AgentAudio _audio = null;
     private void Awake()
     {
         _anim = _basePos.GetComponent<AgentAnimation>();
+        _audio = _basePos.GetComponent<AgentAudio>();
         OnStateAction += () =>
         {
             if (IsUsingSkill)
@@ -44,6 +48,7 @@ public class HealState : AIState, ISkillState
             Physics.Raycast(ray, out hit, 100, LayerMask.GetMask("Player"));
             if (hit.collider != null)
             {
+                _audio.PlayClipSound(skillClip);
                 _anim.PlaySpecialAnimation();
                 _targetPos = hit.transform;
                 IHealable iHeal = _targetPos.GetComponent<IHealable>();

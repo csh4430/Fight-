@@ -20,6 +20,8 @@ public class RainArrowState : AIState, ISkillState
 
     [field: SerializeField]
     public override List<AITransition> Transition { get; set; }
+    [field : SerializeField]
+    public AudioClip skillClip { get; set; }
 
     public GameObject Circle;
     public float Range;
@@ -27,6 +29,7 @@ public class RainArrowState : AIState, ISkillState
     [SerializeField]
     private Transform _basePos;
     private AgentAnimation _anim;
+    private AgentAudio _audio;
 
     [SerializeField]
     private GameObject arrowLauncher = null;
@@ -35,6 +38,7 @@ public class RainArrowState : AIState, ISkillState
     private void Awake()
     {
         _anim = _basePos.GetComponent<AgentAnimation>();
+        _audio = _basePos.GetComponent<AgentAudio>();
         OnStateAction += () =>
         {
             if (IsUsingSkill)
@@ -49,6 +53,8 @@ public class RainArrowState : AIState, ISkillState
     private IEnumerator Check()
     {
         _anim.PlaySpecialAnimation();
+        _audio.SetAudioVolume(0.1f);
+        _audio.PlayClipSound(skillClip);
         yield return new WaitForSeconds(0.4f);
         RaycastHit hit;
         GameObject circle = Circle.Reuse();

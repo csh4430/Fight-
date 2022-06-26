@@ -14,6 +14,7 @@ public class AgentMove : MonoBehaviour
     private CharacterController _characterController = null;
     private AgentAnimation _anim;
     private AgentAttack _attack;
+    public AgentAudio _audio;
 
     public Action<Vector3> OnWalkEvent;
     public Action<Vector3> OnRunEvent;
@@ -23,6 +24,7 @@ public class AgentMove : MonoBehaviour
         _base = GetComponent<Agent>();
         _anim = GetComponent<AgentAnimation>();
         _attack = GetComponent<AgentAttack>();
+        _audio = GetComponent<AgentAudio>();
         _characterController = GetComponent<CharacterController>();
 
         OnWalkEvent += (dir) =>
@@ -32,6 +34,7 @@ public class AgentMove : MonoBehaviour
             MoveAgent(dir);
             _anim.PlayWalkAnimation();
             _anim.StopRunAnimation();
+            _audio.PlayWalkAudio();
         };
         OnRunEvent += (dir) =>
         {
@@ -40,6 +43,7 @@ public class AgentMove : MonoBehaviour
             MoveAgent(dir * 3);
             _anim.PlayRunAnimation();
             _anim.StopWalkAnimation();
+            _audio.PlayWalkAudio();
         };
     }
 
@@ -82,6 +86,7 @@ public class AgentMove : MonoBehaviour
         MoveAgent(Vector3.zero);
         _anim.StopRunAnimation();
         _anim.StopWalkAnimation();
+        _audio.StopAudio();
     }
 
     public void SetAgentCollision(bool value)

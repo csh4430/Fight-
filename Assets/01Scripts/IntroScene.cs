@@ -16,13 +16,13 @@ public class IntroScene : MonoBehaviour
     {
 
         seq = DOTween.Sequence();
-        seq.Append(MainText.DOText("In this War, You Entered Enemy's kingdom.", 4).SetEase(Ease.Linear));
+        seq.Append(MainText.DOText("Back in a day, in Some War", 4).SetEase(Ease.Linear));
         seq.AppendInterval(2);
         seq.AppendCallback(() => MainText.text = "");
-        seq.Append(MainText.DOText("And, You Ordered Your Soldiers", 4).SetEase(Ease.Linear));
+        seq.Append(MainText.DOText("You Ordered Your Soldiers", 4).SetEase(Ease.Linear));
         seq.AppendInterval(2);
         seq.AppendCallback(() => MainText.text = "");
-        seq.Append(MainText.DOText("\"Bring Me The Enemy's King's Head\".", 4).SetEase(Ease.Linear));
+        seq.Append(MainText.DOText("\"Just Fight!\".", 4).SetEase(Ease.Linear));
 
         replayButton.onClick.AddListener(() =>
         {

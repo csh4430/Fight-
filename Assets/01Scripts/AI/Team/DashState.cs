@@ -25,11 +25,15 @@ public class DashState : AIState, ISkillState
 
     private AgentAnimation _anim = null;
     private AgentMove _move = null;
+    private AgentAudio _audio = null;
+    [field :SerializeField]
+    public AudioClip skillClip { get; set; }
     private CharacterController _controller = null;
     private void Awake()
     {
         _anim = _basePos.GetComponent<AgentAnimation>();
         _move = _basePos.GetComponent<AgentMove>();
+        _audio = _basePos.GetComponent<AgentAudio>();
         _controller = _basePos.GetComponent<CharacterController>();
         OnStateAction += () =>
         {
@@ -82,6 +86,7 @@ public class DashState : AIState, ISkillState
                     iHit.DamageAgent(5, gameObject);
                 }
             }
+            _audio.PlayClipSound(skillClip);
             //_move.SetAgentCollision(false);
             _move.enabled = true;  
             _anim.SetSpeed(1);

@@ -17,7 +17,7 @@ public class TeamAgent : Agent, IHittable, IHealable
     public void DamageAgent(float damage, GameObject attacker = null)
     {
         if (IsDead) return;
-        Hp -= damage;
+        Hp -= damage - damage * Defence; ;
         OnDamaged?.Invoke(damage, attacker);
         if (Hp <= 0)
         {

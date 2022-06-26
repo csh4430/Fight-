@@ -8,4 +8,5 @@ public interface ISkillState
     public float CoolDown { get; set; }
     public bool IsUsingSkill { get; set; }
     public Slider CoolDownSilder { get; set; }
+    public AudioClip skillClip { get; set; }
 }
