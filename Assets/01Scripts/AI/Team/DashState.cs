@@ -25,10 +25,12 @@ public class DashState : AIState, ISkillState
 
     private AgentAnimation _anim = null;
     private AgentMove _move = null;
+    private CharacterController _controller = null;
     private void Awake()
     {
         _anim = _basePos.GetComponent<AgentAnimation>();
         _move = _basePos.GetComponent<AgentMove>();
+        _controller = _basePos.GetComponent<CharacterController>();
         OnStateAction += () =>
         {
             if (IsUsingSkill)
@@ -37,7 +39,6 @@ public class DashState : AIState, ISkillState
             {
                 return;
             }
-            IsUsingSkill = true;
             StartCoroutine(DoDash());
         };
     }
@@ -60,6 +61,7 @@ public class DashState : AIState, ISkillState
         Physics.Raycast(ray, out hit, 100, LayerMask.GetMask("Floor"));
         if (hit.collider != null)
         {
+            IsUsingSkill = true;
             _coolDown = CoolDown;
             Vector3 target = hit.point;
             target.y = _basePos.position.y;
@@ -68,16 +70,17 @@ public class DashState : AIState, ISkillState
             _anim.PlaySpecialAnimation();
             while (IsUsingSkill)
             {
-                _move.enabled = false;  
-                _move.MoveAgent(Vector3.forward * 10);
-                Collider[] cols = Physics.OverlapSphere(_basePos.position, 1.5f, LayerMask.GetMask("Enemy"));
-                foreach (Collider col in cols)
-                {
-                    IHittable iHit = col.GetComponent<IHittable>();
-                    if (iHit != null)
-                        iHit.DamageAgent(1, _basePos.gameObject);
-                }
+                _move.MoveAgent(hit.point.normalized * 11);
                 yield return new WaitForFixedUpdate();
+            }
+            Collider[] cols = Physics.OverlapSphere(_basePos.position, 5, LayerMask.GetMask("Enemy"));
+            foreach (Collider col in cols)
+            {
+                IHittable iHit = col.GetComponent<IHittable>();
+                if (iHit != null)
+                {
+                    iHit.DamageAgent(5, gameObject);
+                }
             }
             //_move.SetAgentCollision(false);
             _move.enabled = true;  

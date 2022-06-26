@@ -19,17 +19,19 @@ public class Agent : MonoBehaviour
     protected Action<float, GameObject> OnHealed;
 
     private AgentAnimation _anime;
+    protected AgentMove _move;
     private AgentHpBar _hpBar;
     protected CharacterController _controller;
     private DamageParticle _damageParticle;
     private AIBase _ai;
 
-    private ISkillState _skillState;
+    protected ISkillState _skillState;
     protected virtual void Awake()
     {
         OriginalHp = Hp;
         _controller = GetComponent<CharacterController>();
         _anime = GetComponent<AgentAnimation>();
+        _move = GetComponent<AgentMove>();
         _ai = transform.Find("AI")?.GetComponent<AIBase>();
         _hpBar = GetComponent<AgentHpBar>();
         _damageParticle = GetComponent<DamageParticle>();

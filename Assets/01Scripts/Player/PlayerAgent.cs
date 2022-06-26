@@ -13,6 +13,7 @@ public class PlayerAgent : Agent, IHittable, IHealable
     {
         IsDead = true;
         _controller.enabled = false;
+        GameManager.Instance.GameFail();
         OnDied?.Invoke();
     }
 
@@ -56,5 +57,20 @@ public class PlayerAgent : Agent, IHittable, IHealable
     public void HealAgent(float value, GameObject healer)
     {
         OnHealed?.Invoke(value, healer);
+    }
+    public void OnTriggerEnter(Collider collider)
+    {
+        foreach(Collider col in GameManager.Instance._mapCol)
+        {
+            if(collider == col)
+            {
+                if(GameManager.Instance._mapCol.IndexOf(col) == GameManager.Instance._mapCol.Count - 1)
+                {
+                    GameManager.Instance.GameClear();
+                    return;
+                }
+                GameManager.Instance.SummonEnemy(GameManager.Instance._mapCol.IndexOf(col));
+            }
+        }
     }
 }
