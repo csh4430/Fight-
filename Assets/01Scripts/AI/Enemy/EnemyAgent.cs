@@ -7,6 +7,7 @@ public class EnemyAgent : Agent, IHittable
     [field:SerializeField]
     public bool IsDead { get; private set; } = false;
 
+
     public void DieAgent()
     {
         IsDead = true;

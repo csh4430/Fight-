@@ -60,11 +60,11 @@ public class PlayerAgent : Agent, IHittable, IHealable
     }
     public void OnTriggerEnter(Collider collider)
     {
-        foreach(Collider col in GameManager.Instance._mapCol)
+        foreach (Collider col in GameManager.Instance._mapCol)
         {
-            if(collider == col)
+            if (collider == col)
             {
-                if(GameManager.Instance._mapCol.IndexOf(col) == GameManager.Instance._mapCol.Count - 1)
+                if (GameManager.Instance._mapCol.IndexOf(col) == GameManager.Instance._mapCol.Count - 1)
                 {
                     GameManager.Instance.GameClear();
                     return;

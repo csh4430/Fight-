@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour
 
     public List<Collider> _mapCol = new List<Collider>();
 
+    [SerializeField]
+    private GameObject QuitPanel = null;
+
+    [SerializeField]
+    private Button QuitBtn = null;
+
     private int _enemyCount = 8;
     private int _stage = 0;
 
@@ -84,5 +90,18 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         FadeCamera(false);
+        QuitBtn.onClick.AddListener(() =>
+        {
+            Application.Quit();
+        });
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = QuitPanel.activeInHierarchy ? 1 : 0;
+            QuitPanel.SetActive(!QuitPanel.activeInHierarchy);
+        }
     }
 }
